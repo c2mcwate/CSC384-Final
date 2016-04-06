@@ -3,6 +3,7 @@ import cspbase
 import propagators
 
 def main():
+    #Regular 6x6 board
     board = [[0, 0, 0, 0, 0, 0],
              [-1, 0, 0, 0, -1, 0],
              [0, 1, 0, 0, -1, 0],
@@ -10,7 +11,7 @@ def main():
              [-1, 0, 0, 0, 1, 0],
              [-1, 0, 0, -1, 0, 0]]
 
-
+    #Regular 6x6 board
     boardTwo = [[0, 0, 0, 1, 0, 0],
              [0, 1, 1, 0, -1, 0],
              [0, 1, 0, 0, -1, 0],
@@ -18,7 +19,7 @@ def main():
              [0, 0, 0, 1, 0, 0],
              [0, 0, -1, 0, 0, -1]]
 
-
+    #14x14 Board
     boardThree = [[0, 0, 0, 0, 0, 0, 0, -1, 0, 1, 0, 0, 0, 0],
                 [0, 1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1],
                 [0, 0, -1, 0, 0, 0, 0, 0, 1, 0, 0, -1, -1, 0],
@@ -64,9 +65,9 @@ def main():
                             [1, -1, 1, -1, 1, -1, -1, 1, -1, 1, 1, -1, 1, -1],
                             [1, 1, -1, -1, 1, 1, -1, -1, 1, -1, -1, 1, -1, 1]]
 
-    boardSolved = solve(board, False)
-    boardTwoSolved = solve(boardTwo, False)
-    boardThreeSolved = solve(boardThree, False)
+    boardSolved = solve(board, False, propagators.prop_GAC)
+    boardTwoSolved = solve(boardTwo, False, propagators.prop_GAC)
+    boardThreeSolved = solve(boardThree, False, propagators.prop_GAC)
 
     if boardSolved == boardOneSolution:
         print("Test case 1 passed")
@@ -83,9 +84,14 @@ def main():
     else:
         print("Test case 3 failed")
 
-def solve(board, Print):
+def solve(board, Print, prop):
+    """
+    :param board: 3-In-A-Row board to solve
+    :param Print: Boolean which indicates whether or not to print the solution in console
+    :param prop: Propagator function (either FC or GAC)
+    :return: return board with values assigned by backtracking if a solution exists.
+    """
     CSP = converter.toCSP(board)
-    prop = propagators.prop_GAC
     backtracker = cspbase.BT(CSP)
     backtracker.bt_search(prop)
     if(Print):

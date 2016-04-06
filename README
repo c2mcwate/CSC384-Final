@@ -1,0 +1,15 @@
+Files:
+    converter.py: converter.py holds only one function, toCSP(board). This function takes a 3-in-a-row board of any
+    size and returns an equivalent CSP object.
+
+    Driver.py: This file holds the main function of our program as well as the solver function. The main function
+    holds 3 test cases all ran using backtracking with GAC propagation. The solver function takes 3 inputs, the board,
+    a boolean 'Print' indicating whether or not to print the solution, and the propagator to use in backtracking.
+
+    cspbase.py: This file holds the CSP starter code from A2.
+
+Instructions:
+    In order to use our code on any board, simply create the board (you can make one of your own or take one from
+     https://www.brainbashers.com/3inarow.asp). Once the board is created, run our solver function in Driver.py with
+     the Print argument set to True and a solution to the board will be printed in the console if one exists.
+
