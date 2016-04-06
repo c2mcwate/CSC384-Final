@@ -24,7 +24,7 @@ def toCSP(board):
         varsWithStructure.append(temp)
 
     n = len(board)
-    i=0
+
 
 
     sameAmountTuples = []
@@ -36,16 +36,31 @@ def toCSP(board):
         if sum(combination) == 0:
             sameAmountTuples.append(combination)
 
+    threeInARowTuples = []
+    domains = []
+    for i in range(3):
+        domains.append(domain)
+    for combination in product(*domains):
+        if sum(combination) != 3 and sum(combination) != -3:
+            threeInARowTuples.append(combination)
+
+    t=()
+    for element in varsWithStructure:
+        t += (element,)
+    transposed = [list(x) for x in zip(*t)]
+
+    i=0
     for row in varsWithStructure:
         i=i+1
         c = Constraint("EqualColors-Row{}".format(i), row)
         c.add_satisfying_tuples(sameAmountTuples)
         finalCsp.add_constraint(c)
 
-    t=()
-    for element in varsWithStructure:
-        t += (element,)
-    transposed = [list(x) for x in zip(*t)]
+        for j in range(1, len(row)-1):
+            scope = [row[j-1], row[j], row[j+1]]
+            c = Constraint("3InRow-{}".format(i), scope)
+            c.add_satisfying_tuples(threeInARowTuples)
+            finalCsp.add_constraint(c)
 
     i=0
     for column in transposed:
@@ -54,9 +69,10 @@ def toCSP(board):
         c.add_satisfying_tuples(sameAmountTuples)
         finalCsp.add_constraint(c)
 
+        for j in range(1, len(column)-1):
+            scope = [column[j-1], column[j], column[j+1]]
+            c = Constraint("3InRow-{}".format(i), scope)
+            c.add_satisfying_tuples(threeInARowTuples)
+            finalCsp.add_constraint(c)
 
-
-
-
-
-    print(1)
+    return finalCsp
