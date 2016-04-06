@@ -42,4 +42,7 @@ def toCSP(board):
         consSameList.append(c)
 
 
+
+
+
     print(1)
