@@ -1,5 +1,5 @@
 from cspbase import *
-
+from itertools import product
 
 def toCSP(board):
     finalCsp = CSP("3-in-a-row")
@@ -7,7 +7,7 @@ def toCSP(board):
     consSameList = []
     varsWithStructure = []
 
-    domain = [-1, 0, 1]
+    domain = [-1, 1]
     count = 0
     for row in board:
         temp = []
@@ -25,10 +25,22 @@ def toCSP(board):
 
     n = len(board)
     i=0
+
+
+    sameAmountTuples = []
+    domains = []
+    for i in range(n):
+        domains.append(domain)
+
+    for combination in product(*domains):
+        if sum(combination) == 0:
+            sameAmountTuples.append(combination)
+
     for row in varsWithStructure:
         i=i+1
         c = Constraint("EqualColors-Row{}".format(i), row)
-        consSameList.append(c)
+        c.add_satisfying_tuples(sameAmountTuples)
+        finalCsp.add_constraint(c)
 
     t=()
     for element in varsWithStructure:
@@ -39,7 +51,9 @@ def toCSP(board):
     for column in transposed:
         i=i+1
         c = Constraint("EqualColors-Column{}".format(i), column)
-        consSameList.append(c)
+        c.add_satisfying_tuples(sameAmountTuples)
+        finalCsp.add_constraint(c)
+
 
 
 
